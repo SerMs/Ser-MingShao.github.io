@@ -1,0 +1,519 @@
+/* 标签 */
+
+#aside-content .card-tag-cloud a {
+    border: 1px solid;
+    line-height: 1.5;
+    border-radius: 6px;
+    margin: 3px;
+    padding: 0 5px;
+}
+
+.tag-cloud-list a {
+    border: 1px solid;
+    line-height: 1.5;
+    border-radius: 6px;
+    padding: 5px 15px;
+    font-size: 1.2rem;
+    margin: 5px;
+}
+
+
+/* 最新文章图标 */
+
+#recent-posts>.recent-post-item {
+    position: relative;
+}
+
+.newPost-left,
+.newPost-right {
+    position: absolute;
+    top: 0;
+    color: white;
+    padding: 0 15px;
+    background-color: #49b1f5;
+    border-radius: 0 0 10px 10px;
+}
+
+.newPost-left {
+    left: 15px;
+}
+
+.newPost-right {
+    right: 15px;
+}
+
+
+/* essay.css */
+
+
+/* 页面初始化 */
+
+div#page {
+    background: none;
+    border: 0;
+    padding: 0;
+}
+
+[data-theme=dark] #twikoo .tk-content,
+#twikoo .tk-content {
+    padding: 0;
+    background: transparent;
+}
+
+.talk_item,
+.tk-expand,
+.tk-comments-container>.tk-comment,
+.tk-submit:nth-child(1) {
+    background: var(--card-bg);
+    border: 1px solid #e0e3ed;
+    box-shadow: 0 5px 10px rgb(189 189 189 / 10%);
+    transition: all .3s ease-in-out;
+    border-radius: 12px;
+}
+
+.talk_item:hover,
+.tk-comments-container>.tk-comment:hover,
+.tk-submit:nth-child(1):hover {
+    border-color: #49b1f5;
+}
+
+.tk-submit {
+    padding: 20px 10px 0;
+}
+
+.tk-comments-container>.tk-comment {
+    padding: 15px;
+}
+
+
+/* 页面初始化结束 */
+
+#talk {
+    margin-top: 1rem;
+}
+
+#talk .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#talk .loading img {
+    width: 200px;
+}
+
+.talk_item {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.avatar {
+    margin: 0 !important;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+}
+
+.talk_bottom,
+.talk_meta {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    line-height: 1.5;
+    position: relative;
+}
+
+.talk_bottom {
+    justify-content: space-between;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+span.talk_nick {
+    color: #6dbdc3;
+    font-size: 1.2rem;
+}
+
+svg.is-badge.icon {
+    width: 15px;
+    margin-left: 5px;
+    padding-top: 3px;
+}
+
+span.talk_date {
+    opacity: .6;
+}
+
+.talk_content {
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+.zone_imgbox {
+    display: flex;
+    flex-wrap: wrap;
+    --w: calc(40% - 8px);
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.zone_imgbox a {
+    display: block;
+    border-radius: 12px;
+    width: var(--w);
+    aspect-ratio: 2/0;
+    position: relative;
+}
+
+.zone_imgbox img {
+    width: 100%;
+    /* height: 100%; */
+    margin: 0 !important;
+    object-fit: cover;
+}
+
+
+/* 底部 */
+
+.talk_bottom {
+    opacity: .9;
+}
+
+.talk_bottom .icon {
+    color: var(--font-color);
+    float: right;
+    transition: all .3s;
+}
+
+.talk_bottom .icon:hover {
+    color: #49b1f5;
+}
+
+span.talk_tag {
+    font-size: 14px;
+}
+
+.talk_content>a {
+    margin: 0 3px;
+    color: #ff7d73 !important;
+}
+
+.talk_content>a:hover {
+    text-decoration: none !important;
+    color: #ff5143 !important
+}
+
+
+/* 提醒 */
+
+.limit {
+    transition: all .3s ease-in-out;
+    color: rgba(76, 73, 72, 0.6);
+}
+
+[data-theme=dark] .limit {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.limit {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--font-color);
+}
+
+@media screen and (max-width: 900px) {
+    .zone_imgbox {
+        --w: calc(33% - 5px);
+    }
+    #talk {
+        margin: 10px 3px 0
+    }
+    #post-comment {
+        margin: 0 3px
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .zone_imgbox {
+        gap: 6px;
+    }
+    .zone_imgbox {
+        --w: calc(50% - 3px);
+    }
+    span.talk_date {
+        font-size: 14px;
+    }
+}
+
+.page-title {
+    display: none;
+}
+
+
+/* 加载动画Css */
+
+.loading-img {
+    background: url(https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/202303131726584.png) no-repeat center center;
+    background-size: cover;
+}
+
+
+/* 即刻短文头像加绿色标识 */
+
+#talk .talk_meta::before {
+    content: '';
+    position: absolute;
+    left: 2%;
+    bottom: -20%;
+    -webkit-transform: translate(65%);
+    -moz-transform: translate(65%);
+    -o-transform: translate(65%);
+    -ms-transform: translate(65%);
+    transform: translate(65%);
+    width: 20px;
+    height: 20px;
+    background: #6bdf8f;
+    border: 5px solid #fff;
+    border-radius: 50%;
+    -webkit-transition: filter 375ms ease-in .2s, -webkit-transform .3s;
+    -moz-transition: filter 375ms ease-in .2s, -moz-transform .3s;
+    -o-transition: filter 375ms ease-in .2s, -o-transform .3s;
+    -ms-transition: filter 375ms ease-in .2s, -ms-transform .3s;
+    transition: filter 375ms ease-in .2s, transform .3s;
+    z-index: 2;
+}
+
+
+/* 首页头部卡片重写 */
+
+#aside-content .card-widget:hover,
+#bber-talk:hover,
+#container,
+#post .post-copyright:hover,
+#recent-posts>.recent-post-item:hover,
+.cardHover:hover,
+.error404 #error-wrap .error-content:hover,
+.layout>div:first-child:not(.recent-posts):hover,
+.search-dialog {
+    border-color: var(--leonus-purple);
+    box-shadow: none;
+}
+
+#aside-content>.card-widget:first-child {
+    margin-top: 0;
+}
+
+
+/* ,
+.layout>.recent-posts .pagination>:not(.space):hover,
+.layout>div:first-child:not(.recent-posts):hover  */
+
+#aside-content .card-widget:hover,
+#recent-posts>.recent-post-item:hover,
+.cardHover:hover {
+    -webkit-box-shadow: var(--card-hover-box-shadow);
+    box-shadow: var(--card-hover-box-shadow);
+}
+
+#aside-content .card-widget,
+#bber-talk,
+#container,
+#post .post-copyright,
+#recent-posts>.recent-post-item,
+.cardHover,
+.error404 #error-wrap .error-content,
+.layout>div:first-child:not(.recent-posts),
+.search-dialog {
+    border-radius: 12px;
+    box-shadow: none;
+    border: var(--leonus-border);
+    box-sizing: border-box;
+    transition: all .3s ease-in-out;
+}
+
+#aside-content .card-info {
+    padding: 0 0 25px!important;
+}
+
+#aside-content .card-widget {
+    position: relative;
+    overflow: hidden;
+    margin-top: 15px;
+    padding: 20px 24px;
+}
+
+
+/* .layout>div:first-child:not(.recent-posts) */
+
+#aside-content .card-widget,
+#recent-posts>.recent-post-item,
+.cardHover,
+.layout>.recent-posts .pagination>:not(.space) {
+    border-radius: 8px;
+    background: var(--card-bg);
+    -webkit-box-shadow: var(--card-box-shadow);
+    box-shadow: var(--card-box-shadow);
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -o-transition: all .3s;
+    -ms-transition: all .3s;
+    transition: all .3s;
+}
+
+.animate__fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+}
+
+.is-center {
+    text-align: center;
+}
+
+.avatar-img {
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+    background: url(/img/bg2.webp);
+    background-size: cover;
+    height: 160px;
+    width: 100%;
+    border-radius: 0;
+}
+
+#aside-content .card-info .card-info-data a:not(:last-child):after {
+    opacity: .3;
+    position: absolute;
+    top: 6px;
+    right: 0;
+    content: "";
+    width: 1px;
+    height: 40px;
+    background: var(--font-color);
+}
+
+.avatar-img::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    -webkit-transform: translate(65%);
+    -moz-transform: translate(65%);
+    -o-transform: translate(65%);
+    -ms-transform: translate(65%);
+    transform: translate(65%);
+    width: 20px;
+    height: 20px;
+    background: #6bdf8f;
+    border: 5px solid #fff;
+    border-radius: 50%;
+    -webkit-transition: filter 375ms ease-in .2s, -webkit-transform .3s;
+    -moz-transition: filter 375ms ease-in .2s, -moz-transform .3s;
+    -o-transition: filter 375ms ease-in .2s, -o-transform .3s;
+    -ms-transition: filter 375ms ease-in .2s, -ms-transform .3s;
+    transition: filter 375ms ease-in .2s, transform .3s;
+    z-index: 2;
+}
+
+.avatar-img img {
+    -webkit-transition: filter 375ms ease-in .2s, -webkit-transform .3s;
+    -moz-transition: filter 375ms ease-in .2s, -moz-transform .3s;
+    -o-transition: filter 375ms ease-in .2s, -o-transform .3s;
+    -ms-transition: filter 375ms ease-in .2s, -ms-transform .3s;
+    transition: filter 375ms ease-in .2s, transform .3s;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translate(-50%);
+    -moz-transform: translate(-50%);
+    -o-transform: translate(-50%);
+    -ms-transform: translate(-50%);
+    transform: translate(-50%);
+    bottom: 0;
+    object-fit: cover;
+    z-index: 1;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 5px #fff solid;
+}
+
+img {
+    border-style: none;
+}
+
+#aside-content .card-info .author-info__name {
+    font-weight: 500;
+    font-size: 1.57em;
+}
+
+#aside-content .card-info .author-info__description {
+    margin-top: -0.42em;
+}
+
+#aside-content .card-info .card-info-data a {
+    position: relative;
+}
+
+.site-data>a {
+    display: table-cell;
+}
+
+a {
+    color: #99a9bf;
+    text-decoration: none;
+    word-wrap: break-word;
+    -webkit-transition: all .2s;
+    -moz-transition: all .2s;
+    -o-transition: all .2s;
+    -ms-transition: all .2s;
+    transition: all .2s;
+    overflow-wrap: break-word;
+}
+
+.site-data>a .length-num {
+    margin-top: -0.32em;
+    color: var(--text-highlight-color);
+    font-size: 1.4em;
+    line-height: 1.5;
+}
+
+.site-data>a div {
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -o-transition: all .3s;
+    -ms-transition: all .3s;
+    transition: all .3s;
+}
+
+.site-data>a .headline {
+    color: var(--font-color);
+    font-size: 14px;
+}
+
+#article-container .flink .flink-item-desc,
+#article-container .flink .flink-item-name,
+#pagination .next_info,
+#pagination .prev_info,
+#sidebar #sidebar-menus .menus_items .site-page,
+.limit-one-line,
+.site-data>a .headline {
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.site-data>a div {
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -o-transition: all .3s;
+    -ms-transition: all .3s;
+    transition: all .3s;
+}

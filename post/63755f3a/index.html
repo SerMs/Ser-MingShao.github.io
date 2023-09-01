@@ -1,0 +1,439 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Spring的自动装配 | SerMs</title><meta name="author" content="SerMs"><meta name="copyright" content="SerMs"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Spring的自动装配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring的自动装配">
+<meta property="og:url" content="https://blog.serms.top/post/63755f3a/index.html">
+<meta property="og:site_name" content="SerMs">
+<meta property="og:description" content="Spring的自动装配">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://npm.elemecdn.com/serms-assets@1.0.6/imgs/springlog.png">
+<meta property="article:published_time" content="2022-04-08T15:58:03.000Z">
+<meta property="article:modified_time" content="2023-09-01T03:47:56.137Z">
+<meta property="article:author" content="SerMs">
+<meta property="article:tag" content="Spring">
+<meta property="article:tag" content="Spring注解">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://npm.elemecdn.com/serms-assets@1.0.6/imgs/springlog.png"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blog.serms.top/post/63755f3a/index.html"><link rel="preconnect" href="//cdn1.tianli0.top"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"RQNXWQ8DZV","apiKey":"c89fc18d99756186ec0bd3067bee7389","indexName":"HexoRoot","hits":{"per_page":10},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":500,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":600},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn1.tianli0.top/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn1.tianli0.top/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Spring的自动装配',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-01 11:47:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet"  href="/css/footer.css"><link rel="stylesheet" href="/css/nav_menu.css"><link rel="stylesheet" href="/css/ls.css"><link rel="stylesheet" href="/css/serms.css"><link rel="stylesheet" href="/font/font.css"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/js-heo@1.0.11/bb/showbb_in_index.css"><link rel="stylesheet" href="/css/showbb_in_index.css"><link rel="stylesheet" href="https://npm.elemecdn.com/remixicon@2.5.0/fonts/remixicon.css"><link rel="stylesheet" href="https://cdn1.tianli0.top/gh/Jayhrn/fontawesome-pro/css/all.min.css"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/swiper/swiper-bundle.min.css"><link rel="stylesheet" type="text/css" href="/css/heoMainColor.css"><link rel="stylesheet" type="text/css" href="/css/categoryBar.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://unpkg.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://unpkg.com/hexo-butterfly-swiper/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="SerMs" type="application/atom+xml">
+</head><body><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/pace-js/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn1.tianli0.top/npm/pace-js/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/202303131726584.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">34</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">46</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-tags"></i><span> 归档</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><span> 社交</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><span> 工具箱</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/photos/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/tlink/"><i class="fa-fw fas fa-link"></i><span> 在线工具</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><div class="back-home-button" tabindex="-1"><i class="back-home-button-icon fas fa-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://www.serms.top/" title="前往博客主页" target="_blank" one-link-mark="yes"><img class="back-menu-item-icon" src="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/202303131726584.png"/><span class="back-menu-item-text">主页</span></a><a class="back-menu-item" href="" rel="external nofollow" title="主路线" target="_blank" one-link-mark="yes"><img class="back-menu-item-icon" src="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/202303131726584.png"/><span class="back-menu-item-text">主路线</span></a><a class="back-menu-item" href="" rel="external nofollow" title="Vercel路线" target="_blank" one-link-mark="yes"><img class="back-menu-item-icon" src="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/202303210942099.webp"/><span class="back-menu-item-text">Vercel路线</span></a><a class="back-menu-item" href="https://img.serms.top" rel="external nofollow" title="SerMs图床" target="_blank" one-link-mark="yes"><img class="back-menu-item-icon" src="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/202303210942099.webp"/><span class="back-menu-item-text">Vercel路线</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" href="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/202303202234335.png" title="联系微信" target="_blank" rel="noopener nofollow" one-link-mark="yes"><img class="back-menu-item-icon" src="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/wechat-color.svg"/><span class="back-menu-item-text">联系微信</span></a></div></div></div></div><a id="site-name" href="/"><div class="title">SerMs</div><i class="fa-solid fa-house"></i></a></span><div class="mask-name-container"><center id="name-container"><a id="page-name" href="javascript:rmf.scrollToTop()">PAGE_NAME</a></center></div><div id="menus"><div class="nav-button" id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="nav-button" id="darkmode_navswitch"><a class="darkmode_switchbutton" type="button" title="浅色和深色模式转换" onclick="document.getElementById('darkmode').click()"><i class="fas fa-adjust"></i></a></div><div class="nav-button" id="nav-totop"><a class="totopbtn"><i class="fas fa-arrow-up"></i><span id="percent" onclick="btf.scrollToDest(0,500)">0</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><span> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-tags"></i><span> 归档</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><span> 社交</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><span> 工具箱</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/photos/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/tlink/"><i class="fa-fw fas fa-link"></i><span> 在线工具</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Spring的自动装配</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-08T15:58:03.000Z" title="发表于 2022-04-08 23:58:03">2022-04-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-01T03:47:56.137Z" title="更新于 2023-09-01 11:47:56">2023-09-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Spring/">Spring</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/">Java</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Spring/Spring%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D/">Spring自动装配</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Spring的自动装配"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|&nbsp <span class="post-meta-dianzan"><a class="dianzan" href="javascript:void(0)" onclick="dianzan()"><i class="fas fa-thumbs-up"></i></a><span class="post-meta-label"> 点赞:</span><span class="dianzan-count">0</span></span></span></div></div></div><article class="post-content" id="article-container"><div class="tip home"><p>好处：大幅度减少 Spring 配置</p>
+<p>坏处：依赖不能明确管理，可能会有多个 bean 同时符合注入规则，没有清晰的依赖关系。</p>
+<p>在装配的时候会有两种方式，<code>byName</code>和<code>byType</code>两种。</p>
+<p>byName：根据属性名自动装配。此选项将检查容器并根据名字查找与属性完全一致的 bean，并将其与属性自动装配。</p>
+<p>byType：如果容器中存在一个与指定属性类型相同的 bean，那么将与该属性自动装配；如果存在多个该类型 bean，那么抛出异常，并指出不能使用 byType 方式进行自动装配；如果没有找到相匹配的 bean，则什么事都不发生，也可以通过设置</p>
+</div>
+<h2 id="什么是自动装配"><a href="#什么是自动装配" class="headerlink" title="什么是自动装配"></a>什么是自动装配</h2><p>自动装配：<em>也就是 <code>Spring</code> 会在容器中自动的查找，并自动的给 <code>bean</code> 装配及其关联的属性</em></p>
+<p>涉及到自动装配 <code>bean</code> 的<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=依赖关系&amp;spm=1001.2101.3001.7020">依赖关系</a>时，<code>Spring</code> 有多种处理方式。<code>Spring</code> 提供了 <code>4</code> 种自动装配策略</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">AutowireCapableBeanFactory</span> <span class="keyword">extends</span> <span class="title class_">BeanFactory</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 无需自动装配</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">AUTOWIRE_NO</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 按名称自动装配 bean 属性</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">AUTOWIRE_BY_NAME</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 按类型自动装配 bean 属性</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">AUTOWIRE_BY_TYPE</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 按构造器自动装配</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">AUTOWIRE_CONSTRUCTOR</span> <span class="operator">=</span> <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 过时方法，Spring3.0 之后不再支持</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">AUTOWIRE_AUTODETECT</span> <span class="operator">=</span> <span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="什么是依赖注入"><a href="#什么是依赖注入" class="headerlink" title="什么是依赖注入"></a>什么是依赖注入</h2><p>依赖注入：当一个类的实例需要另一个类的实例协助时，在传统的程序设计过程中，通常由调用者来创建被调用者的实例。然而采用依赖注入的方式，创建被调用者的工作不再由调用者来完成，创建被调用者的实例的工作由 IOC 容器来完成。然后注入调用者，称为依赖注入</p>
+<p>控制反转：当一个类的实例需要另一个类的实例协助时，在传统的程序设计过程中，通常由调用者来创建被调用者的实例。然而采用控制反转的方式，创建被调用者的工作不再由调用者来完成，创建被调用者的实例的工作由 IOC 容器来完成。也就是把对象的创建，初始化，销毁的工作交给 spring ioc 容器来做。由 spring ioc 容器来管理对象的生命周期</p>
+<p>依赖注入的方式有两种：构造器注入和 setter 方法注入</p>
+<h3 id="依赖注入与自动装配的关系"><a href="#依赖注入与自动装配的关系" class="headerlink" title="依赖注入与自动装配的关系"></a>依赖注入与自动装配的关系</h3><p>依赖注入的本质就是装配，装配是依赖注入的具体行为</p>
+<p>在传统的使用 xml 文件装配 bean 是一件很繁琐的事情，而且还需要找到对应类型的 bean 才能装配，一旦 bean 很多，就不好维护了。为了解决这种问题，spring 使用注解来进行自动装配。自动装配就是开发人员不必知道具体要装配哪个 bean 的引用，这个识别的工作会由 spring 来完成。与自动装配配合的还有“自动检测”，这个动作会自动识别哪些类需要被配置成 bean，进而来进行装配</p>
+<p>因此也可以这样理解：自动装配是为了将依赖注入“自动化”的一个简化配置的操作</p>
+<h2 id="Spring-中自动装配的策略"><a href="#Spring-中自动装配的策略" class="headerlink" title="Spring 中自动装配的策略"></a><code>Spring</code> 中自动装配的策略</h2><h3 id="byName"><a href="#byName" class="headerlink" title="byName"></a>byName</h3><p>它的意思是：把与 bean 的属性具有相同名字的其他 bean 自动装配到 bean 的对应属性中</p>
+<p>例：在 User 的 bean 中有个属性 Role myRole，再创建一个 Role 的 bean，它的名字如果叫 myRole，那么在 User 中就可以使用 byName 来自动装配</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Role myRole;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Role</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面是 <code>bean</code> 的定义，再看配置文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;myRole&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.viewscenes.netsupervisor.entity.Role&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1001&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;管理员&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.viewscenes.netsupervisor.entity.User&quot;</span> <span class="attr">autowire</span>=<span class="string">&quot;byName&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如上所述，只要属性名称和 bean 的名称可以对应，那么在 user 的 bean 中就可以使用 byName 来自动装配。那么，如果属性名称对应不上呢？</p>
+<h3 id="byType"><a href="#byType" class="headerlink" title="byType"></a>byType</h3><p>它的意思是：把与 bean 的属性具有相同类型的其他 bean 自动装配到 bean 的对应属性中</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;com.viewscenes.netsupervisor.entity.Role&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;id&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1001&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;管理员&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.viewscenes.netsupervisor.entity.User&quot;</span> <span class="attr">autowire</span>=<span class="string">&quot;byType&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>还是上面的例子，如果使用 <code>byType，Role bean</code> 的 <code>id</code> 都可以省去</p>
+<h3 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor"></a>constructor</h3><p>它是说：<em>把与 <code>bean</code> 的构造器入参具有相同类型的其他 <code>bean</code> 自动装配到 <code>bean</code> 构造器的对应入参中</em>。值的注意的是，具有相同类型的其他 <code>bean</code> 这句话说明它在查找入参的时候，还是通过 <code>bean</code> 的类型来确定</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Role role;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">User</span><span class="params">(Role role)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.role = role;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;user&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.viewscenes.netsupervisor.entity.User&quot;</span> <span class="attr">autowire</span>=<span class="string">&quot;constructor&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="autodetect（不推荐使用了）"><a href="#autodetect（不推荐使用了）" class="headerlink" title="autodetect（不推荐使用了）"></a>autodetect（不推荐使用了）</h3><p>它首先会尝试使用 <code>constructor</code> 进行自动装配，如果失败再尝试使用 <code>byType</code> 。不过，它在 <code>Spring 3.0</code> 之后已经被标记为 <code>@Deprecated</code></p>
+<h2 id="默认的自动装配策略"><a href="#默认的自动装配策略" class="headerlink" title="默认的自动装配策略"></a>默认的自动装配策略</h2><p>默认情况下，default-autowire 属性被设置为 none，标示所有的 bean 都不使用自动装配，除非 bean 上配置了 autowire 属性</p>
+<p>如果你需要为所有的 bean 配置相同的 autowire 属性，有个办法可以简化这一操作，在根元素 beans 上增加属性</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">default-autowire</span>=<span class="string">&quot;byType&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Autowired-注解"><a href="#Autowired-注解" class="headerlink" title="@Autowired 注解"></a>@Autowired 注解</h2><a href="Autowired 注解使用"  title="https://hgm.vercel.app/post/7047b0e7/" referrerPolicy="no-referrer" class="link_card"><div class="link_icon"><img src=" https://hgm.vercel.app/img/favicon.png" class="no-lightbox"></div><div class="link_content"><div class="link_title">https://hgm.vercel.app/post/7047b0e7/</div></div></a>
+<p><strong>具体的大家可以看这篇文章,这里补充一些文章没写全的内容</strong></p>
+<p>从 <code>Spring 2.5</code> 开始，开始支持使用注解来自动装配 <code>bean</code> 的属性。它允许更细粒度的自动装配，我们可以选择性的标注某一个属性来对其应用自动装配。<code>Spring</code> 支持几种不同的应用于自动装配的注解</p>
+<ul>
+<li><code>Spring</code> 自带的 <code>@Autowired</code> 注解</li>
+<li><code>JSR-330</code> 的 <code>@Inject</code> 注解</li>
+<li><code>JSR-250</code> 的 <code>@Resource</code> 注解</li>
+</ul>
+<p>使用 <code>@Autowired</code> 它有几个点需要注意</p>
+<h3 id="强制性"><a href="#强制性" class="headerlink" title="强制性"></a>强制性</h3><p><em>默认情况下，它具有强制契约特性，其所标注的属性必须是可装配的。如果没有 <code>bean</code> 可以装配到 <code>@Autowired</code> 所标注的属性或参数中，那么你会看到 <code>NoSuchBeanDefinitionException</code> 的异常信息</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Object <span class="title function_">doResolveDependency</span><span class="params">(DependencyDescriptor descriptor, String beanName,</span></span><br><span class="line"><span class="params">            Set&lt;String&gt; autowiredBeanNames, TypeConverter typeConverter)</span> <span class="keyword">throws</span> BeansException &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 查找Bean</span></span><br><span class="line">    Map&lt;String, Object&gt; matchingBeans = findAutowireCandidates(beanName, type, descriptor);</span><br><span class="line">    <span class="comment">// 如果拿到的 Bean 集合为空，且 isRequired 为 true，就抛出异常</span></span><br><span class="line">    <span class="keyword">if</span> (matchingBeans.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (descriptor.isRequired()) &#123;</span><br><span class="line">            raiseNoSuchBeanDefinitionException(type, <span class="string">&quot;&quot;</span>, descriptor);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>看到上面的源码，我们可以得到这一信息，<code>bean</code> 集合为空不要紧，关键 <code>isRequired</code> 条件不能成立，如果成立就会抛异常。那么，如果我们不确定属性是否可以装配，可以这样来使用 <code>Autowired</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired(required = false)</span></span><br><span class="line">UserService userService;</span><br></pre></td></tr></table></figure>
+<h3 id="装配策略"><a href="#装配策略" class="headerlink" title="装配策略"></a>装配策略</h3><p>前几天看到大佬群里有个面试题是这样问的：<code>Autowired</code> 是按照什么策略来自动装配的呢？关于这个问题，不能一概而论，你不能简单的说按照类型或者按照名称。但可以确定的一点的是，它默认是按照类型来自动装配的，即 <code>byType</code></p>
+<h4 id="默认按照类型装配"><a href="#默认按照类型装配" class="headerlink" title="默认按照类型装配"></a>默认按照类型装配</h4><p>关键点 <code>findAutowireCandidates</code> 这个方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> Map&lt;String, Object&gt; <span class="title function_">findAutowireCandidates</span><span class="params">(</span></span><br><span class="line"><span class="params">        String beanName, Class&lt;?&gt; requiredType, DependencyDescriptor descriptor)</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取给定类型的所有 bean 名称，里面实际循环所有的 beanName，获取它的实例</span></span><br><span class="line">    <span class="comment">// 再通过 isTypeMatch 方法来确定</span></span><br><span class="line">    String[] candidateNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(</span><br><span class="line">            <span class="built_in">this</span>, requiredType, <span class="literal">true</span>, descriptor.isEager());</span><br><span class="line"></span><br><span class="line">    Map&lt;String, Object&gt; result = <span class="keyword">new</span> <span class="title class_">LinkedHashMap</span>&lt;String, Object&gt;(candidateNames.length);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根据返回的 beanName，获取其实例返回</span></span><br><span class="line">    <span class="keyword">for</span> (String candidateName : candidateNames) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!isSelfReference(beanName, candidateName) &amp;&amp; isAutowireCandidate(candidateName, descriptor)) &#123;</span><br><span class="line">            result.put(candidateName, getBean(candidateName));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>可以看到它返回的是一个列表，那么就表明，按照类型匹配可能会查询到多个实例。到底应该装配哪个实例呢？我看有的文章里说，可以加注解以此规避。比如 <code>@qulifier、@Primary</code> 等，实际还有个简单的办法</p>
+<p>比如，按照 <code>UserService</code> 接口类型来装配它的实现类。<code>UserService</code> 接口有多个实现类，分为 <code>UserServiceImpl、UserServiceImpl2</code>。那么我们在注入的时候，就可以把属性名称定义为 <code>bean</code> 实现类的名称</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">UserService UserServiceImpl2;</span><br></pre></td></tr></table></figure>
+<p>这样的话，<code>spring</code> 会按照 <code>byName</code> 来进行装配。首先，如果查到类型的多个实例，<code>spring</code> 已经做了判断</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Object <span class="title function_">doResolveDependency</span><span class="params">(DependencyDescriptor descriptor, String beanName,</span></span><br><span class="line"><span class="params">            Set&lt;String&gt; autowiredBeanNames, TypeConverter typeConverter)</span> <span class="keyword">throws</span> BeansException &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 按照类型查找 bean 实例</span></span><br><span class="line">    Map&lt;String, Object&gt; matchingBeans = findAutowireCandidates(beanName, type, descriptor);</span><br><span class="line">    <span class="comment">// 如果 bean 集合为空，且 isRequired 成立,就抛出异常</span></span><br><span class="line">    <span class="keyword">if</span> (matchingBeans.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (descriptor.isRequired()) &#123;</span><br><span class="line">            raiseNoSuchBeanDefinitionException(type, <span class="string">&quot;&quot;</span>, descriptor);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果查找的 bean 实例大于 1 个</span></span><br><span class="line">    <span class="keyword">if</span> (matchingBeans.size() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// 找到最合适的那个，如果没有合适的，也抛出异常</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">primaryBeanName</span> <span class="operator">=</span> determineAutowireCandidate(matchingBeans, descriptor);</span><br><span class="line">        <span class="keyword">if</span> (primaryBeanName == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoUniqueBeanDefinitionException</span>(type, matchingBeans.keySet());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (autowiredBeanNames != <span class="literal">null</span>) &#123;</span><br><span class="line">            autowiredBeanNames.add(primaryBeanName);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> matchingBeans.get(primaryBeanName);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看出，如果查到多个实例，<code>determineAutowireCandidate</code> 方法就是关键。它来确定一个合适的 <code>bean</code> 返回。其中一部分就是按照 <code>bean</code> 的名称来匹配</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> String <span class="title function_">determineAutowireCandidate</span><span class="params">(Map&lt;String, Object&gt; candidateBeans,</span></span><br><span class="line"><span class="params">                DependencyDescriptor descriptor)</span> &#123;</span><br><span class="line">    <span class="comment">// 循环拿到的 bean 集合</span></span><br><span class="line">    <span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : candidateBeans.entrySet()) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">candidateBeanName</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">        <span class="type">Object</span> <span class="variable">beanInstance</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">        <span class="comment">// 通过 matchesBeanName 方法来确定 bean 集合中的名称是否与属性的名称相同</span></span><br><span class="line">        <span class="keyword">if</span> (matchesBeanName(candidateBeanName, descriptor.getDependencyName())) &#123;</span><br><span class="line">            <span class="keyword">return</span> candidateBeanName;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后我们回到问题上，得到的答案就是：<em><code>@Autowired</code> 默认使用 <code>byType</code> 来装配属性，如果匹配到类型的多个实例，再通过 <code>byName</code> 来确定 <code>bean</code></em></p>
+<h3 id="主和优先级"><a href="#主和优先级" class="headerlink" title="主和优先级"></a>主和优先级</h3><p>上面我们已经看到了，通过 <code>byType</code> 可能会找到多个实例的 <code>bean</code>。然后再通过 <code>byName</code> 来确定一个合适的 <code>bean</code>，如果通过名称也确定不了呢？</p>
+<p>还是 <code>determineAutowireCandidate</code> 这个方法，它还有两种方式来确定</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> String <span class="title function_">determineAutowireCandidate</span><span class="params">(Map&lt;String, Object&gt; candidateBeans,</span></span><br><span class="line"><span class="params">                DependencyDescriptor descriptor)</span> &#123;</span><br><span class="line">    Class&lt;?&gt; requiredType = descriptor.getDependencyType();</span><br><span class="line">    <span class="comment">// 通过 @Primary注解来标识 bean</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">primaryCandidate</span> <span class="operator">=</span> determinePrimaryCandidate(candidateBeans, requiredType);</span><br><span class="line">    <span class="keyword">if</span> (primaryCandidate != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> primaryCandidate;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 通过 @Priority(value = 0) 注解来标识 bean, value 为优先级大小</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">priorityCandidate</span> <span class="operator">=</span> determineHighestPriorityCandidate(candidateBeans, requiredType);</span><br><span class="line">    <span class="keyword">if</span> (priorityCandidate != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> priorityCandidate;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Primary-注解"><a href="#Primary-注解" class="headerlink" title="@Primary 注解"></a><code>@Primary</code> 注解</h4><p>它的作用是看 <code>bean</code> 上是否包含 <code>@Primary</code> 注解，如果包含就返回。当然了，你不能把多个 <code>bean</code> 都设置为 <code>@Primary</code>，不然你会得到 <code>NoUniqueBeanDefinitionException</code> 这个异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> String <span class="title function_">determinePrimaryCandidate</span><span class="params">(Map&lt;String, Object&gt; candidateBeans, Class&lt;?&gt; requiredType)</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">primaryBeanName</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : candidateBeans.entrySet()) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">candidateBeanName</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">        <span class="type">Object</span> <span class="variable">beanInstance</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">        <span class="keyword">if</span> (isPrimary(candidateBeanName, beanInstance)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (primaryBeanName != <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="type">boolean</span> <span class="variable">candidateLocal</span> <span class="operator">=</span> containsBeanDefinition(candidateBeanName);</span><br><span class="line">                <span class="type">boolean</span> <span class="variable">primaryLocal</span> <span class="operator">=</span> containsBeanDefinition(primaryBeanName);</span><br><span class="line">                <span class="keyword">if</span> (candidateLocal &amp;&amp; primaryLocal) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoUniqueBeanDefinitionException</span>(requiredType, candidateBeans.size(),</span><br><span class="line">                            <span class="string">&quot;more than one &#x27;primary&#x27; bean found among candidates: &quot;</span> + candidateBeans.keySet());</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (candidateLocal) &#123;</span><br><span class="line">                    primaryBeanName = candidateBeanName;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                primaryBeanName = candidateBeanName;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> primaryBeanName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Priority-注解"><a href="#Priority-注解" class="headerlink" title="@Priority 注解"></a><code>@Priority</code> 注解</h4><p>你也可以在 <code>bean</code>上配置<code>@Priority</code>注解，它有个 int 类型的属性 <code>value</code>，可以配置优先级大小。数字越小的，就被优先匹配。同样的，你也不能把多个 <code>bean</code>的优先级配置成相同大小的数值，否则 <code>NoUniqueBeanDefinitionException</code>异常照样出来找你</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> String <span class="title function_">determineHighestPriorityCandidate</span><span class="params">(Map&lt;String, Object&gt; candidateBeans,</span></span><br><span class="line"><span class="params">                                    Class&lt;?&gt; requiredType)</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">highestPriorityBeanName</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="type">Integer</span> <span class="variable">highestPriority</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : candidateBeans.entrySet()) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">candidateBeanName</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">        <span class="type">Object</span> <span class="variable">beanInstance</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">        <span class="type">Integer</span> <span class="variable">candidatePriority</span> <span class="operator">=</span> getPriority(beanInstance);</span><br><span class="line">        <span class="keyword">if</span> (candidatePriority != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (highestPriorityBeanName != <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="comment">// 如果优先级大小相同</span></span><br><span class="line">                <span class="keyword">if</span> (candidatePriority.equals(highestPriority)) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">NoUniqueBeanDefinitionException</span>(requiredType, candidateBeans.size(),</span><br><span class="line">                        <span class="string">&quot;Multiple beans found with the same priority (&#x27;&quot;</span> + highestPriority + <span class="string">&quot;&#x27;) &quot;</span> +</span><br><span class="line">                            <span class="string">&quot;among candidates: &quot;</span> + candidateBeans.keySet());</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (candidatePriority &lt; highestPriority) &#123;</span><br><span class="line">                    highestPriorityBeanName = candidateBeanName;</span><br><span class="line">                    highestPriority = candidatePriority;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                highestPriorityBeanName = candidateBeanName;</span><br><span class="line">                highestPriority = candidatePriority;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> highestPriorityBeanName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Priority</code> 的包在 <code>javax.annotation.Priority</code>，如果想使用它还要引入一个坐标</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.annotation<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.annotation-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本章节重点阐述了 Spring 中的自动装配的几种策略，又通过源码分析了 Autowired 注解的使用方式。<br>在 Spring3.0 之后，有效的自动装配策略分为<code>byType、byName、constructor</code>三种方式。注解<br>Autowired 默认使用 byType 来自动装配，如果存在类型的多个实例就尝试使用 byName 匹配，如果通过 byName 也确定不了，可以通过 Primary 和 Priority 注解来确定。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://blog.serms.top">SerMs</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://blog.serms.top/post/63755f3a/">https://blog.serms.top/post/63755f3a/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://blog.serms.top" target="_blank">SerMs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Spring/">Spring</a><a class="post-meta__tags" href="/tags/Spring%E6%B3%A8%E8%A7%A3/">Spring注解</a></div><div class="post_share"><div class="social-share" data-image="https://npm.elemecdn.com/serms-assets@1.0.6/imgs/springlog.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn1.tianli0.top/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://npm.elemecdn.com/serms-assets@1.0.25/serms/img/wechat.png" target="_blank"><img class="post-qr-code-img" src="https://npm.elemecdn.com/serms-assets@1.0.25/serms/img/wechat.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/serms-assets@1.0.25/serms/img/alipay.png" target="_blank"><img class="post-qr-code-img" src="https://npm.elemecdn.com/serms-assets@1.0.25/serms/img/alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/b5fe82b2/" title="Butterfly学习笔记"><img class="cover" src="https://npm.elemecdn.com/serms-assets@1.0.29/bufferfly/20220420083123.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Butterfly学习笔记</div></div></a></div><div class="next-post pull-right"><a href="/post/7047b0e7/" title="Spring注解-@Autowired注解使用"><img class="cover" src="https://npm.elemecdn.com/serms-assets@1.0.6/imgs/springlog.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Spring注解-@Autowired注解使用</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/b6dbc3f5/" title="Spring5注解"><img class="cover" src="https://npm.elemecdn.com/serms-assets@1.0.6/imgs/springlog.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-16</div><div class="title">Spring5注解</div></div></a></div><div><a href="/post/1d0508a6/" title="Spring注解-Configuration注解使用"><img class="cover" src="https://npm.elemecdn.com/serms-assets@1.0.6/imgs/springlog.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-07</div><div class="title">Spring注解-Configuration注解使用</div></div></a></div><div><a href="/post/3d190b4f/" title="Spring全家桶注解解析(持续跟新ing~)"><img class="cover" src="https://npm.elemecdn.com/serms-assets@1.0.6/imgs/springlog.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-07</div><div class="title">Spring全家桶注解解析(持续跟新ing~)</div></div></a></div><div><a href="/post/7047b0e7/" title="Spring注解-@Autowired注解使用"><img class="cover" src="https://npm.elemecdn.com/serms-assets@1.0.6/imgs/springlog.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-08</div><div class="title">Spring注解-@Autowired注解使用</div></div></a></div><div><a href="/post/7a5d2d7e/" title="SpringDi四种依赖注入方式"><img class="cover" src="https://npm.elemecdn.com/serms-assets/imgs/springlog.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-16</div><div class="title">SpringDi四种依赖注入方式</div></div></a></div><div><a href="/post/a528d135/" title="Spring-动态代理实现AOP(进阶)"><img class="cover" src="https://npm.elemecdn.com/serms-assets@1.0.6/imgs/springlog.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-14</div><div class="title">Spring-动态代理实现AOP(进阶)</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info wow animate__fadeIn" data-wow-duration="data-wow-duration" data-wow-delay="data-wow-delay" data-wow-offset="data-wow-offset" data-wow-iteration="data-wow-iteration" style="visibility: visible; animation-name: fadeIn;"><div class="is-center"><div class="avatar-img"><img src="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/202303131726584.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">SerMs</div><div class="author-info__description">代码如诗，细节成就极致，逻辑成就完美</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="length-num">34</div><div class="headline">文章</div></a><a href="/tags/"><div class="length-num">36</div><div class="headline">标签</div></a><a href="/categories/"><div class="length-num">46</div><div class="headline">分类</div></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">有问题请直接留言，不方便留言的可以添加QQ和微信。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D"><span class="toc-number">1.</span> <span class="toc-text">什么是自动装配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5"><span class="toc-number">2.</span> <span class="toc-text">什么是依赖注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E4%B8%8E%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">2.1.</span> <span class="toc-text">依赖注入与自动装配的关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-%E4%B8%AD%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E7%9A%84%E7%AD%96%E7%95%A5"><span class="toc-number">3.</span> <span class="toc-text">Spring 中自动装配的策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#byName"><span class="toc-number">3.1.</span> <span class="toc-text">byName</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#byType"><span class="toc-number">3.2.</span> <span class="toc-text">byType</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#constructor-NaN"><span class="toc-number">3.3.</span> <span class="toc-text">constructor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#autodetect%EF%BC%88%E4%B8%8D%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8%E4%BA%86%EF%BC%89"><span class="toc-number">3.4.</span> <span class="toc-text">autodetect（不推荐使用了）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E7%AD%96%E7%95%A5"><span class="toc-number">4.</span> <span class="toc-text">默认的自动装配策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Autowired-%E6%B3%A8%E8%A7%A3"><span class="toc-number">5.</span> <span class="toc-text">@Autowired 注解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%BA%E5%88%B6%E6%80%A7"><span class="toc-number">5.1.</span> <span class="toc-text">强制性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A3%85%E9%85%8D%E7%AD%96%E7%95%A5"><span class="toc-number">5.2.</span> <span class="toc-text">装配策略</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E6%8C%89%E7%85%A7%E7%B1%BB%E5%9E%8B%E8%A3%85%E9%85%8D"><span class="toc-number">5.2.1.</span> <span class="toc-text">默认按照类型装配</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E5%92%8C%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">5.3.</span> <span class="toc-text">主和优先级</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Primary-%E6%B3%A8%E8%A7%A3"><span class="toc-number">5.3.1.</span> <span class="toc-text">@Primary 注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Priority-%E6%B3%A8%E8%A7%A3"><span class="toc-number">5.3.2.</span> <span class="toc-text">@Priority 注解</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/359e3d64/" title="Docker入门操作篇"><img src="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/202307142218383.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker入门操作篇"/></a><div class="content"><a class="title" href="/post/359e3d64/" title="Docker入门操作篇">Docker入门操作篇</a><time datetime="2023-07-14T13:53:28.000Z" title="发表于 2023-07-14 21:53:28">2023-07-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c02fe0e2/" title="手撸Java Spring"><img src="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg//serms/%E6%95%99%E4%BD%A0%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0BeanFactory%E5%92%8CIoc.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="手撸Java Spring"/></a><div class="content"><a class="title" href="/post/c02fe0e2/" title="手撸Java Spring">手撸Java Spring</a><time datetime="2023-05-11T08:59:11.000Z" title="发表于 2023-05-11 16:59:11">2023-05-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c084fe70/" title="我的小目标"><img src="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/202303281454456.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="我的小目标"/></a><div class="content"><a class="title" href="/post/c084fe70/" title="我的小目标">我的小目标</a><time datetime="2023-03-28T06:51:57.000Z" title="发表于 2023-03-28 14:51:57">2023-03-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/1d84dc88/" title="一键生成代码"><img src="https://npm.elemecdn.com/serms-assets/mybatis/mybatis.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="一键生成代码"/></a><div class="content"><a class="title" href="/post/1d84dc88/" title="一键生成代码">一键生成代码</a><time datetime="2023-02-03T16:07:01.000Z" title="发表于 2023-02-04 00:07:01">2023-02-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/32277b7/" title="阿里云部署项目"><img src="https://npm.elemecdn.com/serms-assets/imgs/logo.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="阿里云部署项目"/></a><div class="content"><a class="title" href="/post/32277b7/" title="阿里云部署项目">阿里云部署项目</a><time datetime="2022-06-16T07:53:50.000Z" title="发表于 2022-06-16 15:53:50">2022-06-16</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer_deal"><a class="deal_link" target="_blank" rel="noopener" href="https://serms.top" title="个人主页"><i class="fa-solid fa-compass"></i></a><a class="deal_link" href="https://res.abeim.cn/api/qq/?qq=1839928782" title="联系qq" target="_blank"><i class="fa-brands fa-qq"></i></a><a class="deal_link" href="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/202303202234335.png" title="联系微信" target="_blank"><i class="fa-brands fa-weixin"></i></a><a class="deal_link" href="mailto:1839928782@qq.com" title="Email" target="_blank"><i class="fa-solid fa-envelope"></i></a><img class="footer_mini_logo entered loading" style="border-radius:50%" src="https://cdn1.tianli0.top/gh/Ser-MingShao/HexoPublicStaiciImg/serms/202303131726584.png" onclick="btf.scrollToDest(0,500)" title="返回顶部"/><a class="deal_link" target="_blank" rel="noopener" href="https://github.com/Ser-MingShao" title="GitHub"><i class="fa-brands fa-github"></i></a><a class="deal_link" href="https://space.bilibili.com/506746348" title="B站" target="_blank"><i class="fa-brands fa-bilibili"></i></a><a class="deal_link" href="" title="收藏宝阁" target="_blank"><i class="fa-solid fa-star"></i></a><a class="deal_link" href="" title="留言" target="_blank"><i class="fa-solid fa-comment"></i></a></div><div id="Jay-footer"><div class="footer-group"><h3 class="footer-title">直达</h3><div class="footer-links"><a class="footer-item" href="https://www.serms.top" target="_blank">我的主页</a><a class="footer-item" href="/music">音乐欣赏</a><a class="footer-item" href="/harbour">心灵港湾</a><a class="footer-item" href="/random.html">随机文章</a></div></div><div class="footer-group"><h3 class="footer-title">分类</h3><div class="footer-links"><a class="footer-item" href="/categories/📚学习笔记/">学习笔记</a><a class="footer-item" href="/categories/🦋魔改教程/">魔改教程</a><a class="footer-item" href="/categories/🌈算法笔记/">算法笔记</a><a class="footer-item" href="/categories/📙语法教程/">语法教程</a></div></div><div class="footer-group"><h3 class="footer-title">关于</h3><div class="footer-links"><a class="footer-item" href="/about/">关于我</a><a class="footer-item" href="/charts/">博客统计</a><a class="footer-item" href="/archives">文章归档</a><a class="footer-item" href="/update">更新记录</a></div></div><div class="footer-group"><h3 class="footer-title">友链</h3><div class="footer-links" id="friend-links-in-footer"></div></div><div class="footer-group"><h3 class="footer-title">协议</h3><div class="footer-links"><a class="footer-item" href="/privacy/">隐私协议</a><a class="footer-item" href="/cookies/">Cookie</a><a class="footer-item" href="/cc/">版权协议</a></div></div></div><div id="footer-banner"><div class="footer-bottom-content"> <div class="footer-bottom-left"><span>©2022 - 2023 By <a href="https://www.serms.top" target="_blank" rel="noopener" title="点击访问SerMs的主页" style="margin-left:5px">SerMs      </a></span><div> <a class="footer-bottom-link" href="https://www.foreverblog.cn/go.html" target="_blank" rel="noopener external nofollow" title="随机访问十年之约友链博客">虫洞</a><a class="footer-bottom-link" href="https://www.foreverblog.cn/" target="_blank" rel="noopener external nofollow" title="十年之约">十年之约</a></div></div><div class="footer-banner-left"><div id="footer-banner-tips"></div><script src="https://cdn1.tianli0.top/npm/typed.js/lib/typed.min.js"></script><script>var typed = new Typed("#footer-banner-tips", {
+  strings: ["念念不忘，必有回响。", "Never forget, there will be echoes."],
+  startDelay: 200,
+  backDelay: 2000,
+  typeSpeed: 100,
+  loop: true,
+  backSpeed: 20
+}) </script></div><div class="footer-bottom-right"><div id="runtime"></div><div> <a class="footer-bottom-link" href="https://hexo.io/zh-cn/" target="_blank" title="框架" rel="noopener external nofollow">Hexo</a><a class="footer-bottom-link" href="https://butterfly.js.org/" target="_blank" title="主题" rel="noopener external nofollow">Butterfly</a><a class="footer-bottom-link" href="https://beian.miit.gov.cn/" target="_blank" title="备案号" rel="noopener external nofollow">湘ICP备2023005418号</a></div></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn1.tianli0.top/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script><!-- lightGallery -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.1.8/css/lightgallery.css">
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.1.8/lightgallery.min.js"></script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.serms.top',
+      region: '',
+      onCommentLoaded: function() {
+      var commentContents = document.getElementsByClassName('tk-content');
+        for (var i = 0; i < commentContents.length; i++) {
+          var commentItem = commentContents[i];
+          var imgEls = commentItem.getElementsByTagName('img');
+          if (imgEls.length > 0) {
+            for (var j = 0; j < imgEls.length; j++) {
+              var imgEl = imgEls[j];
+              var aEl = document.createElement('a');
+              aEl.setAttribute('class', 'tk-lg-link');
+              aEl.setAttribute('href', imgEl.getAttribute('src'));
+              aEl.setAttribute('data-src', imgEl.getAttribute('src'));
+              aEl.appendChild(imgEl.cloneNode(false));
+              imgEl.parentNode.insertBefore(aEl, imgEl.nextSibling);
+              imgEl.remove();
+            }
+            lightGallery(commentItem, {
+              selector: '.tk-lg-link',
+              share: false
+            });
+          }
+        }
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.serms.top',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn1.tianli0.top/npm/twikoo/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script defer src="https://cdn1.tianli0.top/gh/Jayhrn/CDN/waterfall.min.js"></script><script src="/js/nav_menu.js"></script><script defer src="/js/sermstime.js"></script><script defer src="/js/memos/imgStatus.min.js"></script><script defer src="/js/memos/lately.min.js"></script><script defer src="/js/memos/waterfall.min.js"></script><script defer src="/js/memos/serms_memos.js"></script><script defer src="/js/memos/serms_memos.js"></script><script  charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script  src="https://sdk.51.la/perf/js-sdk-perf.min.js" crossorigin="anonymous"></script><script> LA.init({id:"K0SKtXmY7rlLm7tM",ck:"K0SKtXmY7rlLm7tM"})</script><script> new LingQue.Monitor().init({id:"K0SLuXB04AbSfqnj",sendSuspicious:true});</script><script defer type="text/javascript" src="/js/dianzan.js"></script><script async src="/js/categoryBar/categoryBar.js"></script><script src="https://cdn1.tianli0.top/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div><script src="https://cdn1.tianli0.top/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn1.tianli0.top/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;post/1d84dc88/&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src="https://npm.elemecdn.com/serms-assets/mybatis/mybatis.png" alt="" onerror="this.src=/img/default.png; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-02-03</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;post/1d84dc88/&quot;);" href="javascript:void(0);" alt="">一键生成代码</a><div class="blog-slider__text">减轻你的代码工作量,用EasyCode生成代码!</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;post/1d84dc88/&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;post/32277b7/&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src="https://npm.elemecdn.com/serms-assets/imgs/logo.png" alt="" onerror="this.src=/img/default.png; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-06-16</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;post/32277b7/&quot;);" href="javascript:void(0);" alt="">阿里云部署项目</a><div class="blog-slider__text">使用阿里云两台服务器部署我的毕业设计</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;post/32277b7/&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;post/bb6ff07f/&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src="https://cdn1.tianli0.top/npm/serms-assets@1.0.6/pojie/log.jpg" alt="" onerror="this.src=/img/default.png; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-03-10</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;post/bb6ff07f/&quot;);" href="javascript:void(0);" alt="">idea安装Ultimate最新版[破解]</a><div class="blog-slider__text">idea2021.3.2的破解版本</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;post/bb6ff07f/&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;post/3a723147/&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src="https://cdn1.tianli0.top/npm/serms-assets@1.0.6/Tomcat/log.png" alt="" onerror="this.src=/img/default.png; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-03-30</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;post/3a723147/&quot;);" href="javascript:void(0);" alt="">启动Tomcat出现乱码</a><div class="blog-slider__text">你的Tomcat启动时候是否也经常出现乱码的问题呢?</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;post/3a723147/&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;post/f605ecd9/&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src="https://cdn1.tianli0.top/npm/serms-assets/bufferfly/20220420083123.jpg" alt="" onerror="this.src=/img/default.png; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-04-19</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;post/f605ecd9/&quot;);" href="javascript:void(0);" alt="">哔哔图片问题</a><div class="blog-slider__text">装了哔哔之后，页面图片不能点击查看</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;post/f605ecd9/&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = '/';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://unpkg.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://unpkg.com/hexo-butterfly-swiper/lib/swiper_init.js"></script><!-- hexo injector body_end end --></body></html>
